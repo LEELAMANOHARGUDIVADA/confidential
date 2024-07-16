@@ -11,8 +11,8 @@ export default function ResultPage() {
     },[]);
     
     const ResultData = async () => {
-        const hallticketnumber = "216C1A0583"
-        const response = await fetch(`https://confidential.onrender.com/api/result/${hallticketnumber}`);
+       const hallticketNumber = localStorage.getItem('UserId');
+        const response = await fetch(`https://confidential.onrender.com/api/student/${hallticketNumber}`);
         const data = await response.json();
         console.log(data);
         setStudentData(data.resultDetails);
