@@ -12,7 +12,7 @@ export default function ResultPage() {
     
     const ResultData = async () => {
         const hallticketnumber = "216C1A0583"
-        const response = await fetch(`http://localhost:8000/api/result/${hallticketnumber}`);
+        const response = await fetch(`https://confidential.onrender.com/api/result/${hallticketnumber}`);
         const data = await response.json();
         console.log(data);
         setStudentData(data.resultDetails);
