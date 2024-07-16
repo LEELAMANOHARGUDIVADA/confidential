@@ -5,10 +5,17 @@ import '../App.css'
 const Home = () => {
     const [number, setNumber] = useState();
     const navigate = useNavigate();
-    const formHandler = (e) => {
-        // e.preventDefault();
-        console.log(number);
-        navigate(`/results/${number}`);
+    const formHandler = async(e) => {
+        e.preventDefault();
+       try {
+        const response = await fetch(`https://confidential.onrender.com/api/user/${number}`)
+        const data = await response.json();
+        console.log(data);
+        localStorage.setItem('UserId', data.id)
+        navigate(`/results/${data.id}`);
+       } catch (error) {
+        console.log(error);
+       }
     }
   return (
     <div>
