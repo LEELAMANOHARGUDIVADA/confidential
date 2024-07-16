@@ -31,10 +31,10 @@ app.post('/api/result', async(req,res) => {
     return res.status(200).json({ message: "Result Created Successfully", result });
 });
 
-app.post('/api/result/subjects', async(req,res) => {
+app.post('/api/result/subjects/:id', async(req,res) => {
     const { serialNumber, courseCode, courseName, credits, grade, status } = req.body;
 
-    const student = await Result.findById('6696c77b64bcf5aa6beed752');
+    const student = await Result.findById(req.params.id);
 
     const subject = new Subject({
         serialNumber,
@@ -51,14 +51,30 @@ app.post('/api/result/subjects', async(req,res) => {
     return res.status(200).json({ message: "Subject added successfully", subject })
 });
 
-app.get('/api/result/:id', async(req,res) => {
+app.get('/api/student/:id', async(req,res) => {
     try {
-        const { id } = req.params.id;
-
-    const resultDetails = await Result.findOne(id).populate("subjects");
+    const resultDetails = await Result.findById( req.params.id ).populate("subjects");
+    if (!resultDetails) {
+        return res.status(404).json({ message: 'Results not found' });
+    }
     return res.status(200).json({message: "Fetched Successfully", resultDetails})
     } catch (error) {
         return res.status(500).json({message: "Error while fetching", error})
+    }
+});
+
+app.get('/api/user/:hallticketNumber', async (req, res) => {
+    try {
+        const hallticketNumber = req.params.hallticketNumber;
+        const result = await Result.findOne({ hallticketNumber });
+
+        if (!result) {
+            return res.status(404).json({ message: 'Result not found' });
+        }
+
+        res.json({ id: result._id });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
     }
 });
 
